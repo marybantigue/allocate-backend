@@ -1,0 +1,68 @@
+# import Account, AccountType, SavingsAccount from "./generated/prisma.graphql"
+
+type Query {
+  accountTypes: [AccountType!]!
+  myAccountTypes: [AccountType!]!
+  myAccounts: [Account!]!
+  mySavingsAccounts: [SavingsAccount!]!
+  me: User
+}
+
+type Mutation {
+  signup(email: String!, password: String!, name: String!): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
+  addAccountType(name: String!): AccountType!
+  deleteAccountType(id: ID!): AccountType!
+  addAccount(name: String!, initialAmount: Float!, accountType: AccountTypeInput ): Account!
+  deleteAccount(id: ID!): Account!
+  addSavingsAccount(name: String!, amount: Float!, goal: Float!): SavingsAccount!
+  deleteSavingsAccount(id: ID!): SavingsAccount!
+  # createDraft(title: String!, text: String!): Post!
+  # publish(id: ID!): Post!
+  # deletePost(id: ID!): Post!
+}
+
+# type Subscription {
+#   feedSubscription: PostSubscriptionPayload!
+# }
+
+type AccountType {
+  id: ID!
+  name: String!
+  createdBy: User
+}
+
+type Account {
+  id: ID!
+  name: String!
+  initialAmount: Float!
+  accountType: AccountType
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User
+}
+
+input AccountTypeInput {
+  id: String!
+}
+
+
+type SavingsAccount {
+  id: ID!
+  name: String!
+  amount: Float!
+  goal: Float!
+  createdBy: User
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  accountTypes: [AccountType!]!
+}
